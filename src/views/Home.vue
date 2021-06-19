@@ -8,7 +8,7 @@
                         <el-menu-item-group>
                             <template slot="title"></template>
                             <el-menu-item index="1-1" @click="doGet(1)">选项1</el-menu-item>
-                            <el-menu-item index="1-2">选项2</el-menu-item>
+                            <el-menu-item index="1-2" v-on:click="doGet('xxx')">选项2</el-menu-item>
                         </el-menu-item-group>
                         <el-menu-item-group title="分组2">
                             <el-menu-item index="1-3">选项3</el-menu-item>
@@ -56,12 +56,12 @@
                     <el-dropdown>
                         <i class="el-icon-setting" style="margin-right: 15px"></i>
                         <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item>查看</el-dropdown-item>
+                            <el-dropdown-item v-on:click="open">查看</el-dropdown-item>
                             <el-dropdown-item>新增</el-dropdown-item>
                             <el-dropdown-item>删除</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
-                    <span>王小虎</span>
+                  <!--  <span>王小虎</span>-->
                 </el-header>
 
                 <el-main>
@@ -81,13 +81,17 @@
     import axios from 'axios'
     export default {
         data() {
-            const item = {
-                date: '2016-05-02',
-                userName: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-            };
             return {
-                tableData: Array(10).fill(item)
+                tableData: [],
+                columns: [
+                    {
+                        title: '姓名',
+                        dataIndex: 'userName'
+                    },
+                    {
+                        title: '角色',
+                        dataIndex: 'name'
+                    }]
             }
         },
         
@@ -99,10 +103,18 @@
                 }))
             },*/
             doGet:function (event) {
+                console.log(event)
                 axios.get("http://localhost:20003/username?type="+event).then((response=>{
                     console.log(response.data)
+                    this.tableData = response.data
                 }))
 
+            },
+            doPost:function (event) {
+                console.log(event)
+            },
+            open() {
+                console.log("ssssssssssssssss")
             }
         },
         
