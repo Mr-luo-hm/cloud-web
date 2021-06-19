@@ -31,8 +31,8 @@
       return {
         //  登录 数据绑定
         loginForm: {
-          userName: '',
-          password: ''
+          userName: 'admin',
+          password: 'a123456'
         },
         // 表单验证
         loginFormRules: {
@@ -58,9 +58,13 @@
       login(){
         this.$refs.loginFormRef.validate(async valid=>{
             if (!valid) return;
+            this.loginForm.password= this.loginForm.password+"aaaaaa"
             const {data:res} =await this.$http.post('login',this.loginForm);
-            console.log(res)
-            if (res.code===200) return console.log("登录成功")
+            if (res.code!==200) return this.$message.error("登录失败")
+            // 保存数据 整次会话
+            window.sessionStorage.setItem("token",res.data.token)
+            this.$message.success("登录成功");
+            await this.$router.push({path: '/Home'})
         });
       }
     }
