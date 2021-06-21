@@ -1,4 +1,6 @@
 import Vue from 'vue'
 import axios from 'axios'
 
-Vue
+function login() {
+
+}

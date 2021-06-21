@@ -26,6 +26,8 @@
 </template>
 
 <script>
+  import{encryption} from '../common/password'
+
   export default {
     data() {
       return {
@@ -58,7 +60,8 @@
       login(){
         this.$refs.loginFormRef.validate(async valid=>{
             if (!valid) return;
-            this.loginForm.password= this.loginForm.password+"aaaaaa"
+            this.loginForm.password= encryption(this.loginForm.password)
+            console.log(this.loginForm.password)
             const {data:res} =await this.$http.post('login',this.loginForm);
             if (res.code!==200) return this.$message.error("登录失败")
             // 保存数据 整次会话
