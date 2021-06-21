@@ -3,7 +3,7 @@
     <div class="login_box">
       <!--头像区域-->
       <div class="avatar-box">
-        <img src="../../assets/logo.png">
+        <img src="../../assets/login.jpg">
       </div>
       <!--表单区域-->
       <el-form label-width="0px" class="login_form" :model="loginForm" :rules="loginFormRules" ref="loginFormRef">
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-  import{encryption} from '../common/password'
+  import { encryption } from '../common/password'
 
   export default {
     data() {
@@ -41,33 +41,33 @@
           // 用户名
           userName: [
             {required: true, message: "请输入用户名", trigger: "blur"},
-            {min:3,max:10,message: "账号在3到10个字符之间",trigger: "blur"}
+            {min: 3, max: 10, message: "账号在3到10个字符之间", trigger: "blur"}
           ],
           password: [
             {required: true, message: "请输入密码", trigger: "blur"},
-            {min:6,max:10,message: "账号在6到10个字符之间",trigger: "blur"}
+            {min: 6, max: 10, message: "账号在6到10个字符之间", trigger: "blur"}
           ]
         }
       }
     },
-    methods:{
+    methods: {
       // 重置
-      resetLoginForm(){
+      resetLoginForm() {
         console.log(this)
         this.$refs.loginFormRef.resetFields();
       },
       /*validate预校验*/
-      login(){
-        this.$refs.loginFormRef.validate(async valid=>{
-            if (!valid) return;
-            this.loginForm.password= encryption(this.loginForm.password)
-            console.log(this.loginForm.password)
-            const {data:res} =await this.$http.post('login',this.loginForm);
-            if (res.code!==200) return this.$message.error("登录失败")
-            // 保存数据 整次会话
-            window.sessionStorage.setItem("token",res.data.token)
-            this.$message.success("登录成功");
-            await this.$router.push({path: '/Home'})
+      login() {
+        this.$refs.loginFormRef.validate(async valid => {
+          if (!valid) return;
+          this.loginForm.password = encryption(this.loginForm.password)
+          console.log(this.loginForm.password)
+          const {data: res} = await this.$http.post('login', this.loginForm);
+          if (res.code !== 200) return this.$message.error("登录失败")
+          // 保存数据 整次会话
+          window.sessionStorage.setItem("token", res.data.token)
+          this.$message.success("登录成功");
+          await this.$router.push({path: '/Home'})
         });
       }
     }
