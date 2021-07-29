@@ -26,7 +26,7 @@
 </template>
 
 <script>
-  import { encryption } from '../common/password'
+  import {encryption} from '@/components/common/password'
 
   export default {
     data() {
@@ -43,10 +43,10 @@
             {required: true, message: "请输入用户名", trigger: "blur"},
             {min: 3, max: 10, message: "账号在3到10个字符之间", trigger: "blur"}
           ],
-          password: [
+          /*password: [
             {required: true, message: "请输入密码", trigger: "blur"},
             {min: 6, max: 10, message: "账号在6到10个字符之间", trigger: "blur"}
-          ]
+          ]*/
         }
       }
     },
@@ -62,7 +62,7 @@
           if (!valid) return;
           this.loginForm.password = encryption(this.loginForm.password)
           console.log(this.loginForm.password)
-          const {data: res} = await this.$http.post('login', this.loginForm);
+          const {data: res} = await this.$http.post('http://192.168.1.99:20003/login', this.loginForm);
           if (res.code !== 200) return this.$message.error("登录失败")
           // 保存数据 整次会话
           window.sessionStorage.setItem("token", res.data.token)
@@ -98,7 +98,7 @@
     border-radius: 50%;
     border: 1px solid #eeeeee;
     padding: 10px;
-    box-shadow: 0 0 10px #ddd;
+    box-shadow: 0 0 10px #dddddd;
     position: absolute;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -107,7 +107,7 @@
     img {
       width: 100%;
       height: 100%;
-      border-radius: 50%;
+      border-radius: 80%;
       background-color: #eee;
     }
   }

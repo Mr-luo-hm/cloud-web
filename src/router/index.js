@@ -1,35 +1,28 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import Login from '../components/content/login.vue'
+import Vue from "vue";
+import Router from "vue-router";
+import login from "@/components/content/Login.vue";
+import Home from "../views/Home";
 
-Vue.use(VueRouter)
+Vue.use(Router)
 
-const routes = [
-  {
-    path: '/login',
-    component: Login
-  },
-  {
-    path:'/',  /*重定向login*/
-    redirect:'/login'
-  },
-  {
-    path: '/Home',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
-
-const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
+const router = new Router({
+  mode:'history',
+  routes: [
+    {path: '/', redirect: '/login'},
+    {path: '/login', component: login},
+    {path: '/home', component: Home},
+  ]
+})
+// 路由控制守卫
+router.beforeEach((to, from, next) => {
+  // to 要去哪里
+  // from 来源
+  // next 放行
+  // next() next('/login') 强制跳转
+  if (to.path === '/login') return next();
+  const token = window.sessionStorage.getItem('token');
+  if (!token) return next('/login')
+  next()
 })
 
 export default router
