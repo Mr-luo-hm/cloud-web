@@ -9,7 +9,7 @@
       <el-form label-width="0px" class="login_form" :model="loginForm" :rules="loginFormRules" ref="loginFormRef">
         <!--用户名-->
         <el-form-item prop="userName">
-          <el-input prefix-icon="iconfont icon-user" v-model="loginForm.username"></el-input>
+          <el-input prefix-icon="iconfont icon-user" v-model="loginForm.userName"></el-input>
         </el-form-item>
         <!-- 密码-->
         <el-form-item prop="password">
@@ -26,21 +26,20 @@
 </template>
 
 <script>
-
-  import {login} from '@/api/user/user'
+  import {encryption} from '@/components/common/password'
 
   export default {
     data() {
       return {
         //  登录 数据绑定
         loginForm: {
-          username: 'admin',
+          userName: 'admin',
           password: 'a123456'
         },
         // 表单验证
         loginFormRules: {
           // 用户名
-          username: [
+          userName: [
             {required: true, message: "请输入用户名", trigger: "blur"},
             {min: 3, max: 10, message: "账号在3到10个字符之间", trigger: "blur"}
           ],
@@ -61,20 +60,14 @@
       login() {
         this.$refs.loginFormRef.validate(async valid => {
           if (!valid) return;
-          // this.loginForm.password = encryption(this.loginForm.password)
-          login(this.loginForm).then((res)=>{
-            console.log(res)
-            if (res.status!==200) return this.$message.error("登录失败")
-            window.sessionStorage.setItem("secret",res.headers.secret)
-            this.$router.push({path: '/Home'})
-          })
-          // const {data: res} = login(this.loginForm);
-          // console.log(res)
-          // if (res.code !== 200) return this.$message.error("登录失败")
-          // // 保存数据 整次会话
-          // window.sessionStorage.setItem("token", res.data.token)
-          // this.$message.success("登录成功");
-
+          this.loginForm.password = encryption(this.loginForm.password)
+          console.log(this.loginForm.password)
+          const {data: res} = await this.$http.post('http://192.168.1.99:20003/login', this.loginForm);
+          if (res.code !== 200) return this.$message.error("登录失败")
+          // 保存数据 整次会话
+          window.sessionStorage.setItem("token", res.data.token)
+          this.$message.success("登录成功");
+          await this.$router.push({path: '/Home'})
         });
       }
     }

@@ -4,7 +4,7 @@
     <el-header>
       <div>
         <img src="" alt="">
-        <span>后台管理系统</span>
+        <span>again</span>
       </div>
       <el-button type="info" @click="logout">退出</el-button>
     </el-header>
@@ -41,8 +41,8 @@
   </el-container>
 </template>
 <script>
-  // @ is an alias to /src
-  // import axios from 'axios'
+
+  import {loginOut} from '@/api/user/user'
 
   export default {
     data(){
@@ -62,7 +62,9 @@
         // console.log(res)
       },
       logout: function () {
-        console.log(123)
+        loginOut().then((res)=>{
+          if (res.status===200) return this.$message.info(res.data)
+        })
         window.sessionStorage.clear();
         this.$router.push('/')
       }

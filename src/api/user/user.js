@@ -1,6 +1,15 @@
-import Vue from 'vue'
-import axios from 'axios'
+import axios from '@/utils/request'
 
-function login() {
-
+export  function login(data) {
+    return axios({
+      url: '/login?username='+data.username+'&password='+data.password,
+      method: 'post',
+      data : data
+    })
+}
+export function loginOut() {
+    return axios({
+      url:'/logout',
+      method:'get',
+    })
 }

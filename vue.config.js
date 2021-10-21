@@ -1,16 +1,11 @@
+
 const path = require("path");
+const serverAddress = 'http://192.168.1.248:20000'
+
 function resolve(dir) {
   return path.join(__dirname, dir);
 }
 module.exports = {
-  chainWebpack: config => {
-    config.resolve.alias
-      .set("@", resolve("src"))
-      .set("assets", resolve("src/assets"))
-      .set("components", resolve("src/components"))
-      .set("base", resolve("baseConfig"))
-      .set("public", resolve("public"));
-  },
   configureWebpack: {
     resolve: {
       // 别名
@@ -19,4 +14,17 @@ module.exports = {
       }
     }
   },
+  devServer: {
+    port: 8001,
+    proxy:{
+      '^/api': {
+        target: serverAddress,
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          '^/api': '/'
+        }
+      }
+    }
+  }
 }

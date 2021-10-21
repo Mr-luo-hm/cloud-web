@@ -9,11 +9,12 @@ import axios from "axios";
 
 // axios.defaults.baseURL='http://192.168.1.99:20003'
 
+axios.defaults.withCredentials = true
+
+
 // 请求拦截器
 axios.interceptors.request.use(config=>{
-  console.log(window.sessionStorage.getItem('token'))
-  config.headers.Authorization =window.sessionStorage.getItem("token")
-  // console.log(config)
+  config.headers.secret =window.sessionStorage.getItem("secret")
   return config;
 })
 Vue.prototype.$http=axios
