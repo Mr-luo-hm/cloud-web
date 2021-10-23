@@ -7,16 +7,18 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css';
 import axios from "axios";
 
-// axios.defaults.baseURL='http://192.168.1.99:20003'
-
 axios.defaults.withCredentials = true
 
-
 // 请求拦截器
-axios.interceptors.request.use(config=>{
-  config.headers.secret =window.sessionStorage.getItem("secret")
-  return config;
-})
+// axios.interceptors.request.use(config=>{
+//   console.log("xxxxx"+window.sessionStorage.getItem("secret"))
+//   config.headers.secret =window.sessionStorage.getItem("secret")
+//
+//
+//   return config;
+// })
+
+
 Vue.prototype.$http=axios
 Vue.use(ElementUI)
 

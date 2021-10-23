@@ -29,6 +29,7 @@
 
   import {login} from '@/api/user/user'
 
+
   export default {
     data() {
       return {
@@ -63,7 +64,6 @@
           if (!valid) return;
           // this.loginForm.password = encryption(this.loginForm.password)
           login(this.loginForm).then((res)=>{
-            console.log(res)
             if (res.status!==200) return this.$message.error("登录失败")
             window.sessionStorage.setItem("secret",res.headers.secret)
             this.$router.push({path: '/Home'})

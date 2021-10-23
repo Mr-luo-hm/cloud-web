@@ -8,47 +8,59 @@
       </div>
       <el-button type="info" @click="logout">退出</el-button>
     </el-header>
-    <el-container>
-      <!--侧边栏-->
-      <el-aside width="200px">
-        <el-menu
-          background-color="#333744"
-          text-color="#fff"
-          active-text-color="#ffd04b">
-          <!--一级菜单-->
-          <el-submenu index="1">
-            <!--一级菜单模板区-->
-            <template slot="title">
-              <!--图标-->
-              <i class="el-icon-location"></i>
-              <!--文本-->
-              <span>导航一</span>
-            </template>
-            <!--二级菜单-->
-            <el-menu-item index="1-4-1">
-              <template slot="title">
-                <!--图标-->
-                <i class="el-icon-location"></i>
-                <!--文本-->
-                <span>导航一</span>
-              </template>
-            </el-menu-item>
-          </el-submenu>
-        </el-menu>
-      </el-aside>
-      <el-main>Main</el-main>
-    </el-container>
+    <div class="line"></div>
+    <el-menu
+      :default-active="activeIndex"
+      class="el-menu-demo"
+      mode="horizontal"
+      @select="handleSelect"
+      background-color="#545c64"
+      text-color="#fff"
+      active-text-color="#ffd04b">
+      <el-submenu v-for="menu in menuList" :key="menu.label" :value="menu.value" :index="((menu.id)+1).toString()" >
+        <template slot="title">{{menu.method}}</template>
+        <el-menu-item :index='bean.id.toString()' v-for="bean in menu.beans" :key="bean.id" :value="bean.method">{{bean.method}}</el-menu-item>
+      </el-submenu>
+    </el-menu>
+    <template>
+      <el-table
+        :data="menuList"
+        style="width: 100%"
+        height="250"
+        border
+        :row-class-name="tableRowClassName">
+        <el-table-column
+          prop="id"
+          label="日期"
+          width="500">
+        </el-table-column>
+        <el-table-column
+          prop="method"
+          label="姓名"
+          width="180">
+        </el-table-column>
+        <el-table-column
+          prop="address"
+          label="地址">
+        </el-table-column>
+      </el-table>
+    </template>
   </el-container>
 </template>
 <script>
 
   import {loginOut} from '@/api/user/user'
+  import {menu} from "@/api/user/menu";
 
   export default {
     data(){
       return{
         // 左侧菜单数据
-        menuList:[]
+        menuList:[],
+        activeIndex: '1',
+        list:[1,2,3,4],
+        list2:["a","b","c","d"],
+        beans:[]
       }
     },
     created() {
@@ -56,10 +68,10 @@
     },
     methods: {
       async getMenuList() {
-        const {data: res} = this.$http.get('menu');
-        if (res.meta.status!==200)return this.$message.error(res.meta.message)
-        this.menuList=res.data
-        // console.log(res)
+        menu().then(res=>{
+          if (res.status===200)
+            this.menuList=res.data
+        })
       },
       logout: function () {
         loginOut().then((res)=>{
@@ -67,6 +79,18 @@
         })
         window.sessionStorage.clear();
         this.$router.push('/')
+      },
+      handleSelect(env) {
+        console.log(env);
+      },
+      tableRowClassName({row, rowIndex}) {
+        console.log(row)
+        if (rowIndex === 1) {
+          return 'warning-row';
+        } else if (rowIndex === 3) {
+          return 'success-row';
+        }
+        return '';
       }
     },
   }
@@ -108,6 +132,13 @@
 
   .el-menu {
     border-right-width: 0;
+  }
+  .el-table .warning-row {
+    background: oldlace;
+  }
+
+  .el-table .success-row {
+    background: #f0f9eb;
   }
 </style>
 
