@@ -65,8 +65,7 @@
           // this.loginForm.password = encryption(this.loginForm.password)
           login(this.loginForm).then((res)=>{
             console.log(res);
-            const data=res.data
-            if (data.errorCode!==200) return this.$message.error(data.errorMsg)
+            if (res.data.!==200) return this.$message.error("登录失败")
             window.sessionStorage.setItem("secret",res.data)
             this.$router.push({path: '/Home'})
           })

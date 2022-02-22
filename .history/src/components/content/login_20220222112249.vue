@@ -63,19 +63,17 @@
         this.$refs.loginFormRef.validate(async valid => {
           if (!valid) return;
           // this.loginForm.password = encryption(this.loginForm.password)
-          login(this.loginForm).then((res)=>{
-            console.log(res);
-            const data=res.data
-            if (data.errorCode!==200) return this.$message.error(data.errorMsg)
-            window.sessionStorage.setItem("secret",res.data)
-            this.$router.push({path: '/Home'})
-          })
-          // const {data: res} = login(this.loginForm);
-          // console.log(res)
-          // if (res.code !== 200) return this.$message.error("登录失败")
-          // // 保存数据 整次会话
-          // window.sessionStorage.setItem("token", res.data.token)
-          // this.$message.success("登录成功");
+          // login(this.loginForm).then((res)=>{
+          //   if (res.status!==200) return this.$message.error("登录失败")
+          //   window.sessionStorage.setItem("secret",res.data)
+          //   this.$router.push({path: '/Home'})
+          // })
+          const {data: res} = login(this.loginForm);
+          console.log(res)
+          if (res.code !== 200) return this.$message.error("登录失败")
+          // 保存数据 整次会话
+          window.sessionStorage.setItem("token", res.data.token)
+          this.$message.success("登录成功");
 
         });
       }

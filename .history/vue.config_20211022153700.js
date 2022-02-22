@@ -1,5 +1,5 @@
 const path = require("path");
-const serverAddress = 'http://192.168.1.142:20001'
+const serverAddress = 'http://192.168.1.248:20001'
 
 function resolve(dir) {
   return path.join(__dirname, dir);

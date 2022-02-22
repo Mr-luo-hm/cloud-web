@@ -8,6 +8,7 @@ const service = axios.create({
 })
 
 service.interceptors.request.use(config=>{
+  console.log(1)
   config.headers.secret =window.sessionStorage.getItem("secret")
   return config;
 })

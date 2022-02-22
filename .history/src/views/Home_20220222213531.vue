@@ -22,7 +22,7 @@
         >
           <component
             class="menu-item"
-            v-for="value in navList"
+            v-for="value in leftMenu.navList"
             :key="value.title + value.url"
             :index="value.url"
             :is="
@@ -62,7 +62,7 @@
   </el-container>
 </template>
 <script>
-import { loginOut } from '@/api/user/user'
+ import {loginOut} from '@/api/user/user'
 // import {menu} from "@/api/user/menu";
 
 export default {
@@ -73,7 +73,8 @@ export default {
       address: '上海市普陀区金沙江路 1518 弄',
     }
     return {
-        tableData: Array(20).fill(item),
+      tableData: Array(20).fill(item),
+      leftMenu: {
         isCollapse: false,
         navList: [
           {
@@ -119,15 +120,22 @@ export default {
             url: '/PersonProfile',
           },
         ],
-      }
+      },
+    }
   },
-  methods: {
-    logout() {
-      loginOut().then((res) => {
-        console.log(res)
-      })
-    },
-  },
+  methods:{
+    logout(){
+     
+          loginOut().then((res)=>{
+            console.log(res);
+            const data=res.data
+            if (data.errorCode!==200) return this.$message.error(data.errorMsg)
+            window.sessionStorage.setItem("secret",res.data)
+            this.$router.push({path: '/Home'})
+          })
+        
+    }
+  }
 }
 </script>
 

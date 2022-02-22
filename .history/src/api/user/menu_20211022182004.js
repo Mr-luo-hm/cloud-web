@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function menu() {
   return request({
-    url:'/menu/',
+    url:'/foo/menu',
     method:'get',
   })
 }
